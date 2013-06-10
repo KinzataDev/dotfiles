@@ -6,8 +6,8 @@ set nocompatible   " Disable vi-compatibility
 set laststatus=2   " Always show the statusline
 set encoding=utf-8 " Necessary to show Unicode glyphs
 set t_Co=256 " Explicitly tell Vim that the terminal supports 256 colors
-let g:Powerline_symbols = 'fancy'
-
+" let g:Powerline_symbols = 'fancy'
+set rtp+=~/dotfiles/vim/bundle/powerline/bindings/vim
 set nofoldenable    " disable folding
 
 command -nargs=+ MapToggle call MapToggle(<f-args>)
