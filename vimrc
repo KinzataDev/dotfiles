@@ -20,13 +20,12 @@ syntax on               " syntax highlighting
 " colorscheme darkblue
 colorscheme ron
 
-let g:syntastic_auto_jump=1
-let g:syntastic_mode_map = { "mode": "passive", "active_filetypes": [], "passive_filetypes": [] }
-let g:syntastic_perl_lib_path = './lib'
+let g:syntastic_check_on_open=1
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 let g:syntastic_perl_checkers=['perl','perlcritic']
-let g:syntastic_perl_perlcritic_args="--theme corvisa"
+let g:syntastic_perl_perlcritic_args="--theme corvisa"	
+
 
 set hlsearch            " highlight the last searched term
 filetype plugin on      " use the file type plugins
