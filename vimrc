@@ -22,6 +22,7 @@ colorscheme ron
 
 let g:syntastic_check_on_open=1
 let g:syntastic_error_symbol='✗'
+let g:syntastic_mode_map = { "mode": "passive", "active_filetypes": [], "passive_filetypes": [] }
 let g:syntastic_warning_symbol='⚠'
 let g:syntastic_perl_checkers=['perl','perlcritic']
 let g:syntastic_perl_perlcritic_args="--theme corvisa"	
@@ -57,10 +58,10 @@ vnoremap <C-p> <esc>:'<,'>:w !curl -s -F data=@- http://pastie.it.corp/ \| xclip
 
 " Function Keys
 MapToggle <F2> paste
-map <F3> :let t = winsaveview()<CR>:%!perltidy<CR>:w<CR>:call winrestview(t)<CR>
+map <F3> :let t = winsaveview()<CR>:%!perltidy<CR>:w<CR>:call winrestview(t)<CR>:SyntasticCheck<CR>
 "map <F3> <esc>:!perltidy -b %<CR>:w<CR>
 " map <F4> :w<CR>:!perl -Ilib -c %;podchecker %;perlcritic --theme corvisa %<CR>
-map <F4> :SyntasticCheck<CR>
+map <F4> :!perl %<CR>
 map <F5> :w<CR>:!script -c 'HARNESS_ACTIVE=1 prove -lvmfo %' /tmp/last-prove.txt<CR>:!less -R -F +G /tmp/last-prove.txt<CR>
 map <F6> :!less -R /tmp/last-prove.txt<CR>
 MapToggle <F7> hlsearch

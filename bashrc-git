@@ -7,6 +7,10 @@ MOD_GLYPH="*"
 STATE_GLYPH="|"
 PS1_GLYPH="\$"
 
+USER_COLOR=$(tput setaf 1)
+PATH_COLOR=$(tput setaf 6)
+RESET_COLOR=$(tput sgr0)
+
 # shamelessly ripped off from http://github.com/rtomayko/git-sh/tree/master
 # ... and Ubuntu's __git_ps1() in /etc/bash_completion.d/git
 _git_prompt_color() {
@@ -15,7 +19,8 @@ _git_prompt_color() {
     g="$(git rev-parse --git-dir 2>/dev/null)"
     if [ -z $g ]; then
         export BASH_GIT_BRANCH=""
-        PS1="\u@\h:\w$PS1_GLYPH "
+    #    PS1="\u@\h:\w$PS1_GLYPH "
+		PS1='\n\[$USER_COLOR\][\u@\h \t] \[$PATH_COLOR\]\w \[$RESET_COLOR\]'
         return
     fi
 
@@ -69,7 +74,7 @@ _git_prompt_color() {
     rel="${rel%/}"
     loc="${PWD%/$rel}"
 
-    PS1="\u@\h:${COLOR_BRANCH}${b}${r}${COLOR_RESET}!${COLOR_REPO}${loc/*\/}${COLOR_RESET}${COLOR_WORKDIR}${rel:+/$rel}${COLOR_RESET}${PS1_GLYPH} "
+    PS1="\n\[$USER_COLOR\][\u@\h \t]${COLOR_BRANCH}${b}${r}${COLOR_RESET}!${COLOR_REPO}${loc/*\/}${COLOR_RESET}${COLOR_WORKDIR}${rel:+/$rel}${COLOR_RESET}${PS1_GLYPH} "
 }
 
 ###############################################################################
