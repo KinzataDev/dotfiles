@@ -14,19 +14,18 @@ command -nargs=+ MapToggle call MapToggle(<f-args>)
 
 set history=100         " keep 100 lines of history
 set ruler               " show the cursor position
-syntax on               " syntax highlighting
-" set background=dark
-" colorscheme solarized
-" colorscheme darkblue
-colorscheme ron
 
-let g:syntastic_check_on_open=1
-let g:syntastic_error_symbol='✗'
-let g:syntastic_mode_map = { "mode": "passive", "active_filetypes": [], "passive_filetypes": [] }
-let g:syntastic_warning_symbol='⚠'
-let g:syntastic_perl_checkers=['perl','perlcritic']
-let g:syntastic_perl_perlcritic_args="--theme corvisa"	
-
+syntax on
+syntax enable               " syntax highlighting
+"set background=dark
+"colorscheme solarized
+"colorscheme darkblue
+"colorscheme ron
+"colorscheme wombat256
+"colorscheme colorful256
+colorscheme desert256
+"colorscheme oceanblack256
+"colorscheme symfony
 
 set hlsearch            " highlight the last searched term
 filetype plugin on      " use the file type plugins
@@ -40,7 +39,7 @@ set shiftwidth=4
 set nu
 set viminfo='10,\"100,:20,%,n~/.viminfo
 
-"set iskeyword=@,58
+" set iskeyword=@,58
 nmap _M :!xdg-open https://metacpan.org/module/<cword><CR>
 nmap _H :!perlfind <cword><CR>
 
@@ -56,17 +55,13 @@ vnoremap <C-k> :m-2<CR>gv=gv
 nnoremap <C-p> :!curl -s -F data=@% http://pastie.it.corp/ \| xclip -selection clipboard; xclip -selection clipboard -o<CR>
 vnoremap <C-p> <esc>:'<,'>:w !curl -s -F data=@- http://pastie.it.corp/ \| xclip -selection clipboard; xclip -selection clipboard -o<CR>
 
-" Function Keys
-MapToggle <F2> paste
-map <F3> :let t = winsaveview()<CR>:%!perltidy<CR>:w<CR>:call winrestview(t)<CR>:SyntasticCheck<CR>
-"map <F3> <esc>:!perltidy -b %<CR>:w<CR>
-" map <F4> :w<CR>:!perl -Ilib -c %;podchecker %;perlcritic --theme corvisa %<CR>
-map <F4> :!perl %<CR>
-map <F5> :w<CR>:!script -c 'HARNESS_ACTIVE=1 prove -lvmfo %' /tmp/last-prove.txt<CR>:!less -R -F +G /tmp/last-prove.txt<CR>
-map <F6> :!less -R /tmp/last-prove.txt<CR>
-MapToggle <F7> hlsearch
-MapToggle <F8> wrap
-map <F9> :TagbarOpenAutoClose<CR>
+vmap <C-c> :!xclip -f -sel clip<CR>
+map <C-v> mz:-1r !xclip -o -sel clip<CR>`z
+
+" Comment lines
+source ~/dotfiles/vcomments.vim
+map _{ :call Comment()<CR>
+map _} :call Uncomment()<CR>
 
 " git blame
 vmap _B :<C-U>!git blame <C-R>=expand("%:p") <CR> \| sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
@@ -91,18 +86,52 @@ map! <M-Esc>[65~ <S-MouseUp>
 
 set mouse=v
 
-
 " Show trailing whitespace
-
 highlight ExtraWhitespace ctermbg=red guibg=red
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhitespace /\s\+$/
 
+vmap _S <esc>y :!git log -S'<C-R>"' -1 %<CR>
+vmap _D <esc>y :!git log -S'<C-R>"' -1 -p %<CR>
+
+" Function Keys
+MapToggle <F2> paste
+" PerlTidy / Syntastic Check
+map       <F3> :let t = winsaveview()<CR>:%!perltidy<CR>:w<CR>:call winrestview(t)<CR>:SyntasticCheck<CR>
+vnoremap <F3> <esc>:'<,'>!perltidy<CR>:w<CR>
+" Run the file
+map       <F4> :!perl -I lib/ %<CR>
+" Run test harness
+map       <F5> :w<CR>:!script -c 'HARNESS_ACTIVE=1 prove -lvmfo %' /tmp/last-prove.txt<CR>:!less -R -F +G /tmp/last-prove.txt<CR>
+map       <F6> :!less -R /tmp/last-prove.txt<CR>
+MapToggle <F7> hlsearch
+MapToggle <F8> wrap
+" TagBar
+map       <F9> :TagbarOpenAutoClose<CR>
+
+
+" Syntastic commands
+let g:syntastic_check_on_open=1
+let g:syntastic_error_symbol='✗'
+let g:syntastic_mode_map = { "mode": "passive", "active_filetypes": [], "passive_filetypes": [] }
+let g:syntastic_warning_symbol='⚠'
+let g:syntastic_perl_checkers=['perl','perlcritic']
+let g:syntastic_perl_perlcritic_args="--theme corvisa"	
+
+
 " NERDTree
 map <C-n> :NERDTreeToggle<CR> 
+
 
 " RainbowParen
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+
+" EasyTags 
+let g:easytags_auto_highlight = 1
+
+let g:acp_behaviorPerlOmniLength = 0
+
+
