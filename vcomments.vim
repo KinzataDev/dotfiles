@@ -6,6 +6,9 @@ function! Comment()
     silent s:^:\/\/:g
   elseif ext == 'vim'
     silent s:^:\":g
+  elseif ext == 'xml'
+    silent s/^/<!--/
+	silent s/$/-->/
   endif
 endfunction
 
@@ -17,5 +20,8 @@ function! Uncomment()
     silent s:^\/\/::g
   elseif ext == 'vim'
     silent s:^\"::g
+  elseif ext == 'xml'
+    silent s/^<!--//
+	silent s/-->//
   endif
 endfunction
