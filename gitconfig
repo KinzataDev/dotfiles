@@ -1,0 +1,10 @@
+[user]
+	email = maximilian.witte@corvisa.com
+	name = Maximilian Witte
+[core]
+	editor = vim
+[color]
+	ui = true
+[push]
+	default = current
+
