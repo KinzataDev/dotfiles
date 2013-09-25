@@ -121,18 +121,15 @@ if [ -f ~/.bashrc-git ]; then
 fi
 
 
-export PERL_LOCAL_LIB_ROOT="/home/maximilian.witte/perl5";
-export PERL_MB_OPT="--install_base /home/maximilian.witte/perl5";
-export PERL_MM_OPT="INSTALL_BASE=/home/maximilian.witte/perl5";
-export PERL5LIB="/home/maximilian.witte/perl5/lib/perl5/x86_64-linux-gnu-thread-multi:/home/maximilian.witte/perl5/lib/perl5";
-export PATH="/home/maximilian.witte/perl5/bin:$PATH";
+#export PERL_LOCAL_LIB_ROOT="/home/maximilian.witte/perl5";
+#export PERL_MB_OPT="--install_base /home/maximilian.witte/perl5";
+#export PERL_MM_OPT="INSTALL_BASE=/home/maximilian.witte/perl5";
+#export PERL5LIB="/home/maximilian.witte/perl5/lib/perl5/x86_64-linux-gnu-thread-multi:/home/maximilian.witte/perl5/lib/perl5";
+#export PATH="/home/maximilian.witte/perl5/bin:$PATH";
 
-source /opt/perlbrew/etc/bashrc
-perlbrew use "perl-5.12.4@blackjack"
-
-export PERL5LIB="$PERL5LIB:/home/maximilian.witte/projects/BLACKJACK/mainline/lib";
-export PERL5LIB="$PERL5LIB:/home/maximilian.witte/thunderdome/lib";
-export PATH="/home/maximilian.witte/git/git-achievements:$PATH";
-alias git='git-achievements';
+#export PERL5LIB="$PERL5LIB:/home/maximilian.witte/projects/BLACKJACK/mainline/lib";
+#export PERL5LIB="$PERL5LIB:/home/maximilian.witte/thunderdome/lib";
+#export PATH="/home/maximilian.witte/git/git-achievements:$PATH";
+#alias git='git-achievements';
 
 export TERM=xterm-256color;
