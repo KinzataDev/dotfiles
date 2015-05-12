@@ -1,16 +1,15 @@
 startup_message off
 
+term "xterm-256color"
+
 attrcolor b ".I"    # allow bold colors - necessary for some reason
 termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'   # tell screen how to set colors. AB = background, AF=foreground
 defbce on    # use current bg color for erased chars
 
+defscrollback 40000
 
 hardstatus alwayslastline "%{= dR} %-Lw%50>%{= dG}%n%f* %{= dW}%t%{= dR}%+Lw%<"
 
-
-
-bindkey -k kh prev #home
-bindkey -k kH next #end
 
 bindkey "^[[Z" focus  #shift-tab
 
@@ -25,30 +24,22 @@ screen -t IRSSI      2
 select 2
 stuff "irssi^M"
 
-screen -t psql       3 "psql"
+screen -t psql       3
+stuff "psql"
 
-screen -t Schema     4
+screen -t bash_1     4
 select 4
-stuff "cd projects/BLACKJACK/mainline/lib/Blackjack/Schema/^M"
+stuff "cd workspace/lexi/^M"
 
-screen -t Role       5
+screen -t bash_2       5
 select 5
-stuff "cd projects/BLACKJACK/mainline/lib/Blackjack/Role/^M"
-
-screen -t Controller 6
-select 6
-stuff "cd projects/BLACKJACK/mainline/lib/Blackjack/Controller/^M"
-
-screen -t Server     7
-select 7
-stuff "cd projects/BLACKJACK/mainline/script/^M"
-
-screen -t bash       8
-select 8
-stuff "cd projects/BLACKJACK/mainline/^M"
+stuff "cd workspace/lexi/^M"
 
 select 2
 split
 resize 15
 focus
 select 0
+
+bindkey -k kh prev #home
+bindkey -k kH next #end

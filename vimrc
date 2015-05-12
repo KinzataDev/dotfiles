@@ -27,6 +27,8 @@ colorscheme desert256
 "colorscheme oceanblack256
 "colorscheme symfony
 
+let g:hlvarhl="ctermbg=black ctermfg=red guifg=#ff0000 guibg=#000000 gui=bold"
+
 set hlsearch            " highlight the last searched term
 filetype plugin on      " use the file type plugins
 au BufNewFile,BufRead *.psgi set filetype=perl
@@ -56,7 +58,7 @@ nnoremap <C-p> :!curl -s -F data=@% http://pastie.it.corp/ \| xclip -selection c
 vnoremap <C-p> <esc>:'<,'>:w !curl -s -F data=@- http://pastie.it.corp/ \| xclip -selection clipboard; xclip -selection clipboard -o<CR>
 
 vmap <C-c> :!xclip -f -sel clip<CR>
-map <C-v> mz:-1r !xclip -o -sel clip<CR>`z
+map <C-v> :-1r !xclip -o -sel clip<CR>`z
 
 " Comment lines
 source ~/dotfiles/vcomments.vim
@@ -95,20 +97,36 @@ vmap _S <esc>y :!git log -S'<C-R>"' -1 %<CR>
 vmap _D <esc>y :!git log -S'<C-R>"' -1 -p %<CR>
 
 " Function Keys
-MapToggle <F2> paste
+map       <F2> :!countperl %<CR>
 " PerlTidy / Syntastic Check
 map       <F3> :let t = winsaveview()<CR>:%!perltidy<CR>:w<CR>:call winrestview(t)<CR>:SyntasticCheck<CR>
 vnoremap <F3> <esc>:'<,'>!perltidy<CR>:w<CR>
 " Run the file
-map       <F4> :!perl -I lib/ %<CR>
+map       <F4> :!HARNESS_ACTIVE=1 perl -I lib/ %<CR>
+map       <F5> :!HARNESS_ACTIVE=1 prove -MTest::Pretty -I lib/ %<CR>
 " Run test harness
-map       <F5> :w<CR>:!script -c 'HARNESS_ACTIVE=1 prove -lvmfo %' /tmp/last-prove.txt<CR>:!less -R -F +G /tmp/last-prove.txt<CR>
-map       <F6> :!less -R /tmp/last-prove.txt<CR>
 MapToggle <F7> hlsearch
 MapToggle <F8> wrap
+
 " TagBar
 map       <F9> :TagbarOpenAutoClose<CR>
-
+let g:tagbar_type_perl = {
+	\ 'kinds' : [
+		\ 'c:constants:1:0',
+		\ 'f:formats:1:0',
+		\ 'l:labels:0:1',
+		\ 'p:packages:1:1',
+		\ 's:subroutines:0:1',
+		\ 'd:subroutine declartion [off]:1:0',
+		\ 'w:roles:1:1',
+		\ 'e:extends:1:0',
+		\ 'b:bases:1:0',
+		\ 't:parents:1:0',
+		\ 'u:uses:1:0',
+		\ 'r:requires:1:0',
+		\ 'a:attributes:0:1',
+	\ ]
+\ }
 
 " Syntastic commands
 let g:syntastic_check_on_open=1
@@ -116,8 +134,14 @@ let g:syntastic_error_symbol='✗'
 let g:syntastic_mode_map = { "mode": "passive", "active_filetypes": [], "passive_filetypes": [] }
 let g:syntastic_warning_symbol='⚠'
 let g:syntastic_perl_checkers=['perl','perlcritic']
-let g:syntastic_perl_perlcritic_args="--theme corvisa"	
+let g:syntastic_perl_perlcritic_args="--theme corvisa"
 
+source ~/dotfiles/vim/plugin/blackjack_switch.vim
+"let g:blackjack_path = "/home/maximilian.witte/workspace/blackjack/"
+let g:blackjack_path = "/home/dev/workspace/lxi/"
+"let g:shortcut_project_name = "Blackjack"
+let g:shortcut_project_name = "Lexi"
+nmap _O :call OpenBlackjackFile()<CR>
 
 " NERDTree
 map <C-n> :NERDTreeToggle<CR> 
@@ -131,8 +155,9 @@ au Syntax * RainbowParenthesesLoadBraces
 
 " EasyTags 
 let g:easytags_auto_highlight = 1
-
 let g:acp_behaviorPerlOmniLength = 0
+
+highlight clear SignColumn
 
 " taglist.vim (http://www.vim.org/scripts/script.php?script_id=273)
 " let Tlist_Auto_Open = 1

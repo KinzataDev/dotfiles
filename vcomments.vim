@@ -9,6 +9,8 @@ function! Comment()
   elseif ext == 'xml'
     silent s/^/<!--/
 	silent s/$/-->/
+  elseif ext == 'tt'
+    silent s/^/\/\//
   endif
 endfunction
 
@@ -23,5 +25,7 @@ function! Uncomment()
   elseif ext == 'xml'
     silent s/^<!--//
 	silent s/-->//
+  elseif ext == 'tt'
+    silent s/^\/\///
   endif
 endfunction

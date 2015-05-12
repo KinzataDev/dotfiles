@@ -13,7 +13,7 @@ theme = corvisa
 
 # Default to complaining about things with severity of at least 4
 # Tests will only enforce severity 5
-severity = 1
+severity = 4
 
 ##############################################
 # Configure the policies we follow
@@ -69,5 +69,14 @@ severity = 1
 [Modules::RequireFilenameMatchesPackage]
 add_themes = corvisa
 severity = 5
+
+[Modules::ProhibitExcessMainComplexity]
+add_themes = corvisa
+max_mccabe = 15
+
+[Subroutines::ProhibitExcessComplexity]
+add_themes = corvisa
+max_mccabe = 15
+
 
 # vim: ft=dosini

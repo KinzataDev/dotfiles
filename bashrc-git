@@ -151,7 +151,7 @@ setbranch() {
     fi
 }
 
-export PATH="/home/maximilian.witte/git/git-achievements:$PATH"
+export PATH="$HOME/git/git-achievements:$PATH"
 
 alias git='git-achievements'
 alias gst='git status'
