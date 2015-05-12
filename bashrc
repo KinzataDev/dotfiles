@@ -120,18 +120,59 @@ if [ -f ~/.bashrc-git ]; then
     . ~/.bashrc-git
 fi
 
-export PERL_LOCAL_LIB_ROOT="/home/maximilian.witte/perl5";
-export PERL_MB_OPT="--install_base /home/maximilian.witte/perl5";
-export PERL_MM_OPT="INSTALL_BASE=/home/maximilian.witte/perl5";
-export PERL5LIB="/home/maximilian.witte/perl5/lib/perl5/x86_64-linux-gnu-thread-multi:/home/maximilian.witte/perl5/lib/perl5";
-export PATH="/home/maximilian.witte/perl5/bin:$PATH";
+files_modified() {
+	commits_previous=1;
+	if [ $1 ]; then
+		commits_previous=$1;
+	fi
+	git diff-tree --no-commit-id --stat=150,100 -r --color=always HEAD HEAD~$commits_previous
+}
 
-source /opt/perlbrew/etc/bashrc
-perlbrew use "perl-5.12.4@blackjack"
+alias bj='starman -Ilib -MBlackjack -MBlackjack::Schema'
+alias reset_b='git reset --soft HEAD~; git reset HEAD'
 
-export PERL5LIB="$PERL5LIB:/home/maximilian.witte/projects/BLACKJACK/mainline/lib";
-export PERL5LIB="$PERL5LIB:/home/maximilian.witte/thunderdome/lib";
-export PATH="/home/maximilian.witte/git/git-achievements:$PATH";
-alias git='git-achievements';
+set -o vi
+
+
+#export PERL_LOCAL_LIB_ROOT="/home/maximilian.witte/perl5";
+#export PERL_MB_OPT="--install_base /home/maximilian.witte/perl5";
+#export PERL_MM_OPT="INSTALL_BASE=/home/maximilian.witte/perl5";
+#export PERL5LIB="/home/maximilian.witte/perl5/lib/perl5/x86_64-linux-gnu-thread-multi:/home/maximilian.witte/perl5/lib/perl5";
+#export PATH="/home/maximilian.witte/perl5/bin:$PATH";
+
+
+# source "/home/maximilian.witte/perl5/perlbrew/etc/bashrc"
+#source "/opt/perlbrew/etc/bashrc"
+#perlbrew use "perl-5.12.4@blackjack"
+
+export PERL5LIB="$HOME/src/slcadillac/lib:$PERL5LIB";
+export PATH="$HOME/src/slcadillac/bin:$PATH";
+
+export PERL5LIB="$HOME/src/yp/perl/lib:$PERL5LIB";
+export PATH="$HOME/src/yp/perl/bin:$PATH";
+
+#export PERL5LIB="$HOME/src/blackjack/local/lib/perl5:$PERL5LIB";
+#export PATH="$HOME/src/blackjack/local/bin:$PATH";
+#export PERL5LIB="$HOME/src/slcadillac/local/lib/perl5:$PERL5LIB";
+#export PATH="$HOME/src/slcadillac/local/bin:$PATH";
+
+#export PERL5LIB="$PERL5LIB:$HOME/workspace/blackjack/mainline/lib";
+#export PERL5LIB="$PERL5LIB:$HOME/thunderdome/lib";
+
+export PATH="$HOME/.plenv/bin:$PATH"
+#source "/home/maximilian.witte/workspace/lexi/etc/plenv/bashrc"
 
 export TERM=xterm-256color;
+
+# Changes what Blackjack uses for session store - My computer doesn't like the FastNmap or whatever
+#export SESSION_STORE=memcached
+
+
+# Added by dev_setup
+if [ -z "$SLP_PROJECT" ]; then
+    if [ -f /usr/local/bin/slp ]; then
+        . /usr/local/bin/slp
+    fi
+fi
+
+source ~/.git-completion.sh
