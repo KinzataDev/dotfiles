@@ -176,3 +176,17 @@ if [ -z "$SLP_PROJECT" ]; then
 fi
 
 source ~/.git-completion.sh
+
+# if we're NOT ssh'd in
+if [ ! ${SSH_TTY} ]; then
+
+#	open /Applications/Utilities/XQuartz.app
+	# then refocus iTerm.app
+	osascript -e 'tell application "iTerm" to activate'
+
+	# if DISPLAY isn't set
+	#if [ x${DISPLAY} = x ]; then
+	#	export DISPLAY=:0
+	#fi
+	export DISPLAY=:0
+fi

@@ -2,13 +2,14 @@ source ~/.vim/functions.vim
 
 call pathogen#infect()
 
+
 set nocompatible   " Disable vi-compatibility
 set laststatus=2   " Always show the statusline
 set encoding=utf-8 " Necessary to show Unicode glyphs
 set t_Co=256 " Explicitly tell Vim that the terminal supports 256 colors
-" let g:Powerline_symbols = 'fancy'
 set rtp+=~/dotfiles/vim/bundle/powerline/bindings/vim
 set nofoldenable    " disable folding
+" let g:Powerline_symbols = 'fancy'
 
 command -nargs=+ MapToggle call MapToggle(<f-args>)
 
@@ -23,13 +24,15 @@ syntax enable               " syntax highlighting
 "colorscheme ron
 "colorscheme wombat256
 "colorscheme colorful256
-colorscheme desert256
+"colorscheme desert256
 "colorscheme oceanblack256
 "colorscheme symfony
 
+" Highlight variable colors
 let g:hlvarhl="ctermbg=black ctermfg=red guifg=#ff0000 guibg=#000000 gui=bold"
-
 set hlsearch            " highlight the last searched term
+
+" Filetype plugins
 filetype plugin on      " use the file type plugins
 au BufNewFile,BufRead *.psgi set filetype=perl
 
@@ -42,7 +45,7 @@ set nu
 set viminfo='10,\"100,:20,%,n~/.viminfo
 
 " set iskeyword=@,58
-nmap _M :!xdg-open https://metacpan.org/module/<cword><CR>
+nmap _M :!open https://metacpan.org/module/<cword><CR>
 nmap _H :!perlfind <cword><CR>
 
 " move lines
@@ -53,10 +56,11 @@ inoremap <C-k> <Esc>:m-2<CR>==gi
 vnoremap <C-j> :m'>+<CR>gv=gv
 vnoremap <C-k> :m-2<CR>gv=gv
 
-" create pastie
-nnoremap <C-p> :!curl -s -F data=@% http://pastie.it.corp/ \| xclip -selection clipboard; xclip -selection clipboard -o<CR>
-vnoremap <C-p> <esc>:'<,'>:w !curl -s -F data=@- http://pastie.it.corp/ \| xclip -selection clipboard; xclip -selection clipboard -o<CR>
+" create pastie, currently irrelevant
+"nnoremap <C-p> :!curl -s -F data=@% http://pastie.it.corp/ \| xclip -selection clipboard; xclip -selection clipboard -o<CR>
+"vnoremap <C-p> <esc>:'<,'>:w !curl -s -F data=@- http://pastie.it.corp/ \| xclip -selection clipboard; xclip -selection clipboard -o<CR>
 
+" Copy & Pasta
 vmap <C-c> :!xclip -f -sel clip<CR>
 map <C-v> :-1r !xclip -o -sel clip<CR>`z
 
@@ -66,7 +70,10 @@ map _{ :call Comment()<CR>
 map _} :call Uncomment()<CR>
 
 " git blame
-vmap _B :<C-U>!git blame <C-R>=expand("%:p") <CR> \| sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
+" TODO rewrite this
+
+vmap _S <esc>y :!git log -S'<C-R>"' -1 %<CR>
+vmap _D <esc>y :!git log -S'<C-R>"' -1 -p %<CR>
 
 " When editing a file, always jump to the last cursor position
 autocmd BufReadPost *
@@ -92,9 +99,6 @@ set mouse=v
 highlight ExtraWhitespace ctermbg=red guibg=red
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhitespace /\s\+$/
-
-vmap _S <esc>y :!git log -S'<C-R>"' -1 %<CR>
-vmap _D <esc>y :!git log -S'<C-R>"' -1 -p %<CR>
 
 " Function Keys
 map       <F2> :!countperl %<CR>
@@ -136,6 +140,7 @@ let g:syntastic_warning_symbol='⚠'
 let g:syntastic_perl_checkers=['perl','perlcritic']
 let g:syntastic_perl_perlcritic_args="--theme corvisa"
 
+" Quick file switch
 source ~/dotfiles/vim/plugin/blackjack_switch.vim
 "let g:blackjack_path = "/home/maximilian.witte/workspace/blackjack/"
 let g:blackjack_path = "/home/dev/workspace/lxi/"
@@ -145,7 +150,6 @@ nmap _O :call OpenBlackjackFile()<CR>
 
 " NERDTree
 map <C-n> :NERDTreeToggle<CR> 
-
 
 " RainbowParen
 au VimEnter * RainbowParenthesesToggle
