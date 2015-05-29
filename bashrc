@@ -165,6 +165,10 @@ export PATH="$HOME/.plenv/bin:$PATH"
 #export PATH="/home/maximilian.witte/git/git-achievements:$PATH";
 #alias git='git-achievements';
 
+
+# DOCKER SHIT
+eval $(boot2docker shellinit 2>/dev/null) 
+
 export TERM=xterm-256color;
 
 # Changes what Blackjack uses for session store - My computer doesn't like the FastNmap or whatever
@@ -179,3 +183,17 @@ if [ -z "$SLP_PROJECT" ]; then
 fi
 
 source ~/.git-completion.sh
+
+# if we're NOT ssh'd in
+if [ ! ${SSH_TTY} ]; then
+
+#	open /Applications/Utilities/XQuartz.app
+	# then refocus iTerm.app
+	osascript -e 'tell application "iTerm" to activate'
+
+	# if DISPLAY isn't set
+	#if [ x${DISPLAY} = x ]; then
+	#	export DISPLAY=:0
+	#fi
+	export DISPLAY=:0
+fi
