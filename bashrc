@@ -162,6 +162,10 @@ export PATH="$HOME/src/yp/perl/bin:$PATH";
 export PATH="$HOME/.plenv/bin:$PATH"
 #source "/home/maximilian.witte/workspace/lexi/etc/plenv/bashrc"
 
+
+# DOCKER SHIT
+eval $(boot2docker shellinit 2>/dev/null) 
+
 export TERM=xterm-256color;
 
 # Changes what Blackjack uses for session store - My computer doesn't like the FastNmap or whatever
