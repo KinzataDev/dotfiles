@@ -153,7 +153,7 @@ setbranch() {
 
 export PATH="$HOME/git/git-achievements:$PATH"
 
-alias git='git-achievements'
+#alias git='git-achievements'
 alias gst='git status'
 alias gd='git diff'
 alias gdc='git diff --cached'

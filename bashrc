@@ -133,7 +133,6 @@ alias reset_b='git reset --soft HEAD~; git reset HEAD'
 
 set -o vi
 
-
 #export PERL_LOCAL_LIB_ROOT="/home/maximilian.witte/perl5";
 #export PERL_MB_OPT="--install_base /home/maximilian.witte/perl5";
 #export PERL_MM_OPT="INSTALL_BASE=/home/maximilian.witte/perl5";
@@ -161,6 +160,10 @@ export PATH="$HOME/src/yp/perl/bin:$PATH";
 
 export PATH="$HOME/.plenv/bin:$PATH"
 #source "/home/maximilian.witte/workspace/lexi/etc/plenv/bashrc"
+#export PERL5LIB="$PERL5LIB:/home/maximilian.witte/projects/BLACKJACK/mainline/lib";
+#export PERL5LIB="$PERL5LIB:/home/maximilian.witte/thunderdome/lib";
+#export PATH="/home/maximilian.witte/git/git-achievements:$PATH";
+#alias git='git-achievements';
 
 export TERM=xterm-256color;
 
