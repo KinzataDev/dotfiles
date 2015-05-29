@@ -1,0 +1,125 @@
+package ${1:}::Role::Result::${2:};
+
+# ABSTRACT: $2 result methods
+
+use Moose::Role;
+with "$1::Role::Core";
+
+use Cadillac::Exceptions qw/ access_denied validation_error throw database_error /;
+
+use Cadillac::Try;
+use Cadillac::FormValidator::Constraints qw/ value_in_list boolean number_with_commas /;
+use Data::FormValidator::Constraints qw/ email /;
+use Data::FormValidator::Constraints::DateTime qw/ to_datetime /;
+
+use $1::Transaction transaction    => { -as => 'txn' };
+
+=head1 ATTRIBUTES
+
+=head2 _data_profile
+
+=cut
+
+has '_data_profile' => (
+	is	  => 'ro',
+	isa	 => 'HashRef',
+	lazy	=> 1,
+	builder => '_build_data_profile',
+);
+
+sub _build_data_profile {
+	my $self = shift;
+
+	my @required = qw/
+		${4:}
+	  /;
+
+	my @optional = qw/
+	  /;
+
+	if ( $self->in_storage ) {
+		push @optional, @required;
+		@required = qw//;
+	}
+
+	return {
+		required => \@required,
+		optional => \@optional,
+		constraint_methods => {
+
+		},
+		defaults => {
+
+		},
+	};
+}
+
+=head1 METHODS
+
+=head2 save
+
+=cut
+
+sub save {
+
+	my $self = shift;
+	my $data = shift;
+	my $opts = shift;
+
+	$data = $self->_validate($data, '${3:}');
+
+	try {
+		txn(
+			sub {
+				$self->set_columns($data);
+				$self->update_or_insert;
+
+				$self->discard_changes;
+			}
+		);
+	}
+	catch {
+		database_error(
+			message => 'Caught database error when saving $2',
+			dberror => $_,
+		);
+	};
+
+	return $self;
+}
+
+=head1 PRIVATE METHODS
+
+=head2 _validate
+
+Performs validation on the L</_data_profile>
+
+=cut
+
+sub _validate {
+	my $self      = shift;
+	my $data_r    = shift;
+	my $data_path = shift;
+
+	return unless ref $data_r eq 'HASH';
+
+	my $data_profile = $self->_data_profile;
+
+	return Cadillac::FormValidator->check( $data_r, $data_profile, $data_path, )->valid;
+}
+
+=head2 REST_data
+
+=cut
+
+override REST_data => sub {
+	my $self = shift @_;
+
+	my $data = super;
+
+	return $data;
+};
+
+1;
+
+

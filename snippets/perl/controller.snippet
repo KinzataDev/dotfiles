@@ -1,0 +1,169 @@
+package ${1:}::Controller::${2:};
+
+#ABSTRACT ${3:} Controller
+
+=doc_listing ${4:}
+
+$3
+
+=cut
+
+use Moose;
+use namespace::autoclean;
+
+BEGIN { extends '$1::Controller::REST' }
+
+use $1::Try;
+use Data::UUID;
+
+use JSON;
+
+use Log::Any qw( $log );
+
+use $1::Exceptions qw/
+  access_denied
+  bad_request
+  not_found
+  database_error
+  /;
+
+=doc_api ${5:}
+
+=cut
+
+sub setup_base : Chained( '/' ) PathPart( '$5' ) CaptureArgs( 0 ) AllowAnyUser {
+	my $self = shift;
+	my $c    = shift;
+
+	my $$4_rs = $c->model('DB::${6:}')->search();
+
+	$c->stash->{$4_rs} = $$4_rs;
+	return;
+}
+
+sub base : Chained( setup_base ) PathPart('') Args(0)    #
+  ActionClass('REST')                                    #
+  AllowAnyUser {
+}
+
+=head3 GET $5
+
+=doc_operation GET
+
+Summary: Retrieve a full list of all ${8:}s
+Notes: Retrieves a full list of every $8 the user can see
+Model: $6
+
+=cut
+
+sub base_GET {
+	my $self = shift;
+	my $c    = shift;
+
+	my $data_r = $self->filter_rest_data( $c->req->params, $c->stash->{$4_rs} );
+
+	$self->status_ok( $c, entity => $data_r );
+	return;
+}
+
+=head3 POST $5
+
+=doc_operation POST
+
+Summary: Create a new $8
+Notes: Create a new $8
+Model: $6
+
+=cut
+
+sub base_POST {
+	my $self = shift;
+	my $c    = shift;
+
+	my $$4 = $c->model('DB::$6')    #
+	  ->new_result( {} )                                              #
+	  ->save( $c->req->data );                                        #
+
+	$self->status_created(
+		$c,
+		location =>
+		  $c->uri_for( $self->action_for('$7'), [ $$4->$7_id ] ),
+		entity => {
+			success => 1,
+			data    => $$4->REST_data,
+		},
+	);
+	return;
+}
+
+=doc_api $5/:$4_id
+
+=cut
+
+sub setup_${7:} : Chained( setup_base ) PathPart( '' ) CaptureArgs( 1 ) AllowAnyUser {
+	my $self                    = shift;
+	my $c                       = shift;
+	my $$4_id = shift;
+
+	$c->stash->{$4} = $c->stash->{$4_rs}->find( { $7_id => $uuid }, );
+
+	not_found( sprintf( 'The requested $7 [%s] was not found', $uuid ) )
+	  unless defined $c->stash->{$4};
+	return;
+}
+
+sub $7 : Chained( setup_$7 ) PathPart('') Args(0)    #
+  ActionClass('REST')                                      #
+  AllowAnyUser {
+}
+
+=head3 GET $5/:$4_id
+
+=doc_operation GET
+
+Summary: Retrieve a given $8
+Notes: Retrieves the given $8
+Model: $6
+
+=cut
+
+sub $7_GET {
+	my $self = shift;
+	my $c = shift;
+
+	$self->status_ok(
+		$c,
+		entity => {
+			success => 1,
+			data    => $c->stash->{$4}->REST_data,
+		},
+	);
+	return;
+}
+
+=head3 PUT $5/:$4_id
+
+=doc_operation PUT
+
+Summary: Update a given $8
+Notes: Updates the given $8
+Model: $6
+
+=cut
+
+sub $7_PUT {
+	my $self = shift;
+	my $c    = shift;
+
+	my $$4 = $c->stash->{$4}->save( $c->req->data );
+
+	$self->status_ok(
+		$c,
+		entity => {
+			success => 1,
+			data    => $$4->REST_data,
+		},
+	);
+	return;
+}
+
